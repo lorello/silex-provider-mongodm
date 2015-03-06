@@ -2,8 +2,8 @@
 
 namespace Wildsurfer\Provider;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Purekid\Mongodm\MongoDB;
 
 /*
@@ -14,9 +14,9 @@ class MongodmServiceProvider implements ServiceProviderInterface
     /*
      * register
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['mongodm'] = $app->share(function() use ($app) {
+        $app['mongodm'] = $app->protect(function() use ($app) {
             if(isset($app['mongodm.blocks']) && is_array($app['mongodm.blocks'])) {
                 foreach($app['mongodm.blocks'] as $block => $config) {
                     MongoDB::setConfigBlock($block, array(
@@ -44,7 +44,7 @@ class MongodmServiceProvider implements ServiceProviderInterface
     /*
      * boot
      */
-    public function boot(Application $app)
+    public function boot(Container $app)
     {
     }
 }
