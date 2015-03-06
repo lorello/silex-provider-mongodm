@@ -16,7 +16,7 @@ class MongodmServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
-        $app['mongodm'] = $app->protect(function() use ($app) {
+        $app['mongodm'] = function() use ($app) {
             if(isset($app['mongodm.blocks']) && is_array($app['mongodm.blocks'])) {
                 foreach($app['mongodm.blocks'] as $block => $config) {
                     MongoDB::setConfigBlock($block, array(
@@ -38,7 +38,7 @@ class MongodmServiceProvider implements ServiceProviderInterface
                 ));
             }
             return MongoDB::instance();
-        });
+        };
     }
 
     /*
